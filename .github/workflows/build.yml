@@ -5,17 +5,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
           java-version: '17'
-      - uses: android-actions/setup-android@v3
-      - name: Clean local config
-        run: rm -f local.properties
+          distribution: 'temurin'
+
       - name: Make gradlew executable
         run: chmod +x gradlew
-      - name: Build Bundle
-        run:./gradlew bundleRelease --no-daemon
+
+      - name: Build Release AAB
+        run:./gradlew bundleRelease --no-daemon --stacktrace
+
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
