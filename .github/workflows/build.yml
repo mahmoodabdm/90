@@ -15,7 +15,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
       - name: Build Bundle
-        run: ./gradlew bundleRelease --no-daemon
+        run:./gradlew bundleRelease --no-daemon
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
