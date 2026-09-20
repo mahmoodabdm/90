@@ -9,16 +9,22 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Fix Wrapper
+
+      - name: Fix to Gradle 8.5
         run: |
           rm -f local.properties gradle-wrapper.jar
           mkdir -p gradle/wrapper
+          sed -i "s/gradle-7.6.3/gradle-8.5/g" gradle/wrapper/gradle-wrapper.properties
+          sed -i "s/gradle-7.6.3/gradle-8.5/g" gradle/wrapper/gradle-wrapper.properties || true
+          cat gradle/wrapper/gradle-wrapper.properties
           curl -L -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.5.0/gradle/wrapper/gradle-wrapper.jar
           echo "sdk.dir=$ANDROID_HOME" > local.properties
           chmod +x gradlew
+
       - name: Build AAB
         run: |
-         ./gradlew bundleDebug --no-daemon
+         ./gradlew bundleDebug --no-daemon --stacktrace
+
       - name: Upload AAB
         uses: actions/upload-artifact@v4
         with:
